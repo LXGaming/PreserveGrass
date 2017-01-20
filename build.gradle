@@ -1,0 +1,49 @@
+apply plugin: "java"
+
+targetCompatibility = 1.8
+sourceCompatibility = 1.8
+
+version = "1.0.0"
+group = "io.github.lxgaming.preservegrass"
+archivesBaseName = "PreserveGrass"
+
+repositories {
+  mavenCentral()
+  maven {
+    url "https://hub.spigotmc.org/nexus/content/repositories/snapshots/"
+  }
+  maven {
+    url "https://oss.sonatype.org/content/repositories/snapshots/"
+  }
+}
+
+configurations {
+  provided {
+    compile.extendsFrom(provided)
+  }
+}
+
+dependencies {
+  provided "org.spigotmc:spigot-api:1.11-R0.1-SNAPSHOT"
+}
+
+jar {
+  from {
+    (configurations.compile - configurations.provided).collect {
+	  it.isDirectory() ? it : zipTree(it)
+	}
+  }
+  from {
+    ["LICENSE"]
+  }
+}
+
+processResources {
+  inputs.property "archivesBaseName", project.archivesBaseName
+  inputs.property "version", project.version
+  
+  from (sourceSets.main.resources.srcDirs) {
+    include "plugin.yml"
+    expand "name":project.archivesBaseName, "version":project.version
+  }
+}

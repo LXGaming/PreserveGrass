@@ -1,0 +1,6 @@
+name: ${name}
+main: io.github.lxgaming.preservegrass.PreserveGrass
+version: ${version}
+description: Preserve Grass.
+author: LX_Gaming
+website: http://www.lxgaming.github.io
